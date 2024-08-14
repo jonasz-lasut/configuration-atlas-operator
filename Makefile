@@ -1,6 +1,6 @@
 # Project Setup
 PROJECT_NAME := configuration-atlas-operator
-PROJECT_REPO := github.com/upbound/$(PROJECT_NAME)
+PROJECT_REPO :=  github.com/jonasz-lasut/$(PROJECT_NAME)
 
 # NOTE(hasheddan): the platform is insignificant here as Configuration package
 # images are not architecture-specific. We constrain to one platform to avoid
@@ -22,10 +22,8 @@ UPTEST_VERSION = v0.11.1
 # Setup XPKG
 XPKG_DIR = $(shell pwd)
 XPKG_IGNORE = .github/workflows/*.yaml,.github/workflows/*.yml,examples/*.yaml,.work/uptest-datasource.yaml,test/provider/*.yaml,gitops/*.yaml
-XPKG_REG_ORGS ?= xpkg.upbound.io/upbound
-# NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
-# inferred.
-XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/upbound
+XPKG_REG_ORGS ?= xpkg.upbound.io/judasz
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/judasz
 XPKGS = $(PROJECT_NAME)
 -include build/makelib/xpkg.mk
 

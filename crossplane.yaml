@@ -10,7 +10,7 @@ metadata:
       This Crossplane configuration is a starting point to use gitops in your own internal cloud.
     meta.crossplane.io/readme: |
       This Crossplane configuration is a starting point to use gitops in your own internal cloud.
-      To learn more checkout the [GitHub repo](https://github.com/upbound/configuration-atlas-operator/)
+      To learn more checkout the [GitHub repo](https:// github.com/jonasz-lasut/configuration-atlas-operator/)
       that you can copy and customize to meet the exact needs of your organization!
 spec:
   crossplane:
