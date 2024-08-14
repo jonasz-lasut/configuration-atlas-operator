@@ -76,4 +76,8 @@ yamllint:
 	@yamllint ./apis || $(FAIL)
 	@$(OK) running yamllint
 
+# This target requires passing XPKG_TOKEN
+login:
+	$(UP) login --token $(XPKG_TOKEN)
+
 .PHONY: uptest e2e render yamllint
