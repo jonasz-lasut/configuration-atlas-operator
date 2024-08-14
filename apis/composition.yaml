@@ -1,0 +1,54 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xatlas.database.jlasut.io
+  labels:
+    type: database
+spec:
+  writeConnectionSecretsToNamespace: upbound-system
+  compositeTypeRef:
+    apiVersion: database.jlasut.io/v1alpha1
+    kind: XAtlas
+  mode: Pipeline
+  pipeline:
+    - step: patch-and-transform
+      functionRef:
+        name: crossplane-contrib-function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        patchSets:
+          - name: Common
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.labels
+                toFieldPath: metadata.labels
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.annotations
+                toFieldPath: metadata.annotations
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.parameters.providerConfigName
+                toFieldPath: spec.providerConfigRef.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.parameters.deletionPolicy
+                toFieldPath: spec.deletionPolicy
+        resources:
+          - name: releaseAtlas
+            base:
+              apiVersion: helm.crossplane.io/v1beta1
+              kind: Release
+              spec:
+                forProvider:
+                  chart:
+                    name: atlas-operator
+                    repository: oci://ghcr.io/ariga/charts
+                  namespace: atlas-system
+            patches:
+              - type: PatchSet
+                patchSetName: Common
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.parameters.operators.atlas.version
+                toFieldPath: spec.forProvider.chart.version
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.parameters.prewarmDB
+                toFieldPath: spec.forProvider.values.prewarmDevDB

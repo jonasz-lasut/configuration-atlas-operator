@@ -1,0 +1,59 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xatlas.database.jlasut.io
+spec:
+  group: database.jlasut.io
+  names:
+    kind: XAtlas
+    plural: xatlas
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  description: Atlas Operator configuration parameters.
+                  properties:
+                    providerConfigName:
+                      type: string
+                      description: Crossplane ProviderConfig to use for provisioning this resources
+                    deletionPolicy:
+                      description: Delete the external resources when the Claim/XR is deleted. Defaults to Delete
+                      enum:
+                        - Delete
+                        - Orphan
+                      type: string
+                      default: Delete
+                    prewarmDB:
+                      description: If enabled the operator won't recreate migration databases
+                      type: boolean
+                      default: true
+                    operators:
+                      description: Configuration for operators.
+                      type: object
+                      default:
+                        atlas:
+                          version: "0.5.0"
+                      properties:
+                        atlas:
+                          description: Configuration for the Atlas Operator operator.
+                          type: object
+                          properties:
+                            version:
+                              description: Atlas Operator helm-chart version to run.
+                              type: string
+                              default: "0.5.0"
+                          required:
+                            - version
+                  required:
+                    - providerConfigName
+                    - deletionPolicy
+                    - prewarmDB

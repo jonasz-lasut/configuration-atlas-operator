@@ -1,0 +1,8 @@
+apiVersion: database.jlasut.io/v1alpha1
+kind: XAtlas
+metadata:
+  name: configuration-atlas-operator
+spec:
+  parameters:
+    providerConfigName: configuration-atlas-operator
+    prewarmDB: false
